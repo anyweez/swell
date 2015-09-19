@@ -21,7 +21,7 @@ import (
 func main() {
 	// TODO: catch this error I suppose? Not sure when it would actually be thrown.
 	local_dir, _ := filepath.Abs(filepath.Dir(os.Args[0]))
-	config, err := ReadConfig("swell.conf", []string{local_dir, "/etc/"})
+	config, err := ReadConfig("swell.conf", []string{local_dir, "/etc"})
 	if err != nil {
 		logrus.Fatal(fmt.Sprintf("Error reading configuration file: %s", err.Error()))
 	}
