@@ -1,0 +1,11 @@
+{
+	"ImportPath": "github.com/anyweez/swell",
+	"GoVersion": "go1.5.1",
+	"Deps": [
+		{
+			"ImportPath": "github.com/Sirupsen/logrus",
+			"Comment": "v0.8.7",
+			"Rev": "418b41d23a1bf978c06faea5313ba194650ac088"
+		}
+	]
+}
