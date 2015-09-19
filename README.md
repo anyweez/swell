@@ -45,3 +45,8 @@ Swell will ensure that all scripts are run.
     swell webserver mongodb
     
 And you're done!
+
+## Downloads
+Precompiled packages are available for Ubuntu-like distributions at 
+[https://packagecloud.io/anyweez/public](https://packagecloud.io/anyweez/public) and can be installed
+via apt-get.

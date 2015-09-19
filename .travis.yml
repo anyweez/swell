@@ -1,6 +1,61 @@
 language: go
-
 go:
-  - 1.3
-  - 1.4
-  - tip
+- 1.3
+- 1.4
+- tip
+after_success: 
+  # This is a Travis-specific path.
+  - $HOME/gopath/src/github.com/anyweez/swell/build_deb.sh
+
+# Deploy to PackageCloud repository so it can be installed and upgraded easily via apt-get. Currently
+# deploying for Ubuntu 14.04 and newer.
+# See other supported distros at:
+#   https://packagecloud.io/docs#os_distro_version
+deploy:
+  # Ubuntu 14.04: Trusty Tahr
+  - provider: packagecloud  
+    repository: public
+    username: anyweez
+    local-dir: $TRAVIS_BUILD_DIR
+    skip_cleanup: true
+    token:
+      secure: skByS/tSw91KY+CBwMj6FlhTs7NpRnlqukGK3sDoiiXtzRd4cubeLDincsAx9XibiAnz7K4NdYMC7r87qKiuAVMDzJDsDV+wgBhPXlBPGTafae1/RKm4JrwvhYGTNNn3He8LN4YOXIP67phtGx95K2IVW9uvY3BBMR7P/xTRo082n4s6yxsT9g8LLrRcmyo/U9h+PHRouvsYYx5wwOFYTqY7JDuoIzKbBemA+CFAXD34CyJcZqPVfh4O/QpAlMPFJNT/ZVqtTDYoEttQfj59uUC2jR1+Jt/4RcU7l09IoUzNTBTvv28veMI/k/EJNPHnK62U4oJp0h3ocP21WSxbbZ+FgoGpoM9hLNg0sw1JYs2xI/Cf9V5Eguw9WWd7EqvaCaMSDO+oMM5MnQIqv7X/WLYtLicFeePDr04xYrbU9Sz9ut8sUS1tkuCuwACIUKYHLB3vzrMSfbp00vMbUCYdAsswLX0RWTNJeDCuFylazl00/kIL+PIo0I2vwIwtXcparMCDvQUXEMm5oVbTGZvHXp6l+Fv09psak1CNPgNDJsQ5iGLopryGPwqlhEiSkd35HReFBEBSUi8xDKMo6aRgweWR6viTENiX95YLwHCD7tKt3qYQlawFLy+KFvNriMAPpNHrkWYksNfNdqgOdC3sTwAelil3sLef/RUb21ckiYw=
+    dist: ubuntu/trusty
+    on:
+      go: tip
+    
+  # Ubuntu 14.10: Utopic Unicorn
+  - provider: packagecloud
+    repository: public
+    username: anyweez
+    local-dir: $TRAVIS_BUILD_DIR
+    skip_cleanup: true
+    token:
+      secure: skByS/tSw91KY+CBwMj6FlhTs7NpRnlqukGK3sDoiiXtzRd4cubeLDincsAx9XibiAnz7K4NdYMC7r87qKiuAVMDzJDsDV+wgBhPXlBPGTafae1/RKm4JrwvhYGTNNn3He8LN4YOXIP67phtGx95K2IVW9uvY3BBMR7P/xTRo082n4s6yxsT9g8LLrRcmyo/U9h+PHRouvsYYx5wwOFYTqY7JDuoIzKbBemA+CFAXD34CyJcZqPVfh4O/QpAlMPFJNT/ZVqtTDYoEttQfj59uUC2jR1+Jt/4RcU7l09IoUzNTBTvv28veMI/k/EJNPHnK62U4oJp0h3ocP21WSxbbZ+FgoGpoM9hLNg0sw1JYs2xI/Cf9V5Eguw9WWd7EqvaCaMSDO+oMM5MnQIqv7X/WLYtLicFeePDr04xYrbU9Sz9ut8sUS1tkuCuwACIUKYHLB3vzrMSfbp00vMbUCYdAsswLX0RWTNJeDCuFylazl00/kIL+PIo0I2vwIwtXcparMCDvQUXEMm5oVbTGZvHXp6l+Fv09psak1CNPgNDJsQ5iGLopryGPwqlhEiSkd35HReFBEBSUi8xDKMo6aRgweWR6viTENiX95YLwHCD7tKt3qYQlawFLy+KFvNriMAPpNHrkWYksNfNdqgOdC3sTwAelil3sLef/RUb21ckiYw=
+    dist: ubuntu/utopic
+    on:
+      go: tip
+      
+  # Ubuntu 15.04: Vivid Vervet
+  - provider: packagecloud
+    repository: public
+    username: anyweez
+    local-dir: $TRAVIS_BUILD_DIR
+    skip_cleanup: true
+    token:
+      secure: skByS/tSw91KY+CBwMj6FlhTs7NpRnlqukGK3sDoiiXtzRd4cubeLDincsAx9XibiAnz7K4NdYMC7r87qKiuAVMDzJDsDV+wgBhPXlBPGTafae1/RKm4JrwvhYGTNNn3He8LN4YOXIP67phtGx95K2IVW9uvY3BBMR7P/xTRo082n4s6yxsT9g8LLrRcmyo/U9h+PHRouvsYYx5wwOFYTqY7JDuoIzKbBemA+CFAXD34CyJcZqPVfh4O/QpAlMPFJNT/ZVqtTDYoEttQfj59uUC2jR1+Jt/4RcU7l09IoUzNTBTvv28veMI/k/EJNPHnK62U4oJp0h3ocP21WSxbbZ+FgoGpoM9hLNg0sw1JYs2xI/Cf9V5Eguw9WWd7EqvaCaMSDO+oMM5MnQIqv7X/WLYtLicFeePDr04xYrbU9Sz9ut8sUS1tkuCuwACIUKYHLB3vzrMSfbp00vMbUCYdAsswLX0RWTNJeDCuFylazl00/kIL+PIo0I2vwIwtXcparMCDvQUXEMm5oVbTGZvHXp6l+Fv09psak1CNPgNDJsQ5iGLopryGPwqlhEiSkd35HReFBEBSUi8xDKMo6aRgweWR6viTENiX95YLwHCD7tKt3qYQlawFLy+KFvNriMAPpNHrkWYksNfNdqgOdC3sTwAelil3sLef/RUb21ckiYw=
+    dist: ubuntu/vivid
+    on:
+      go: tip
+
+  # Ubuntu 15.10: Wily Werewolf
+  - provider: packagecloud
+    repository: public
+    username: anyweez
+    local-dir: $TRAVIS_BUILD_DIR
+    skip_cleanup: true
+    token:
+      secure: skByS/tSw91KY+CBwMj6FlhTs7NpRnlqukGK3sDoiiXtzRd4cubeLDincsAx9XibiAnz7K4NdYMC7r87qKiuAVMDzJDsDV+wgBhPXlBPGTafae1/RKm4JrwvhYGTNNn3He8LN4YOXIP67phtGx95K2IVW9uvY3BBMR7P/xTRo082n4s6yxsT9g8LLrRcmyo/U9h+PHRouvsYYx5wwOFYTqY7JDuoIzKbBemA+CFAXD34CyJcZqPVfh4O/QpAlMPFJNT/ZVqtTDYoEttQfj59uUC2jR1+Jt/4RcU7l09IoUzNTBTvv28veMI/k/EJNPHnK62U4oJp0h3ocP21WSxbbZ+FgoGpoM9hLNg0sw1JYs2xI/Cf9V5Eguw9WWd7EqvaCaMSDO+oMM5MnQIqv7X/WLYtLicFeePDr04xYrbU9Sz9ut8sUS1tkuCuwACIUKYHLB3vzrMSfbp00vMbUCYdAsswLX0RWTNJeDCuFylazl00/kIL+PIo0I2vwIwtXcparMCDvQUXEMm5oVbTGZvHXp6l+Fv09psak1CNPgNDJsQ5iGLopryGPwqlhEiSkd35HReFBEBSUi8xDKMo6aRgweWR6viTENiX95YLwHCD7tKt3qYQlawFLy+KFvNriMAPpNHrkWYksNfNdqgOdC3sTwAelil3sLef/RUb21ckiYw=
+    dist: ubuntu/wily
+    on:
+      go: tip
