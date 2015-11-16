@@ -12,6 +12,7 @@ import (
 type SwellProfile struct {
 	Name          string
 	AbsScriptPath []string
+	Enabled       bool
 }
 
 /**
@@ -22,13 +23,31 @@ type SwellProfile struct {
 func LoadProfiles(profileNames []string, config SwellConfig) ([]SwellProfile, error) {
 	profiles := make([]SwellProfile, 0)
 
-	for _, name := range profileNames {
-		profile, err := loadProfile(name, config)
-		if err != nil {
-			return profiles, errors.New(fmt.Sprintf("Error loading profile '%s': %s", name, err.Error()))
-		}
+	potentials, err := ioutil.ReadDir(config.ProfilesPath)
+	if err != nil {
+		return profiles, err
+	}
 
-		profiles = append(profiles, profile)
+	for _, potential := range potentials {
+		if potential.IsDir() {
+			profile, err := loadProfile(potential.Name(), config)
+
+			if err != nil {
+				return profiles, errors.New(fmt.Sprintf("Error loading profile '%s': %s", profile.Name, err.Error()))
+			}
+
+			// Enable the profile if it was specified as one of the active profiles. Otherwise
+			// leave it alone (it defaults to false).
+			for _, name := range profileNames {
+				if profile.Name == name {
+					profile.Enabled = true
+				}
+			}
+
+			profiles = append(profiles, profile)
+		} else {
+			logrus.Warn(potential.Name() + " is not a directory; skipping...")
+		}
 	}
 
 	return profiles, nil
@@ -41,7 +60,10 @@ func LoadProfiles(profileNames []string, config SwellConfig) ([]SwellProfile, er
  */
 func loadProfile(name string, config SwellConfig) (SwellProfile, error) {
 	fullDir := fmt.Sprintf("%s/%s", config.ProfilesPath, name)
-	profile := SwellProfile{Name: name}
+	profile := SwellProfile{
+		Name:    name,
+		Enabled: false, // will be flipped to true later if it needs to be
+	}
 
 	src, err := os.Stat(fullDir)
 	if err != nil {
