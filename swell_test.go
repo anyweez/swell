@@ -1,9 +1,9 @@
 package main
 
 import (
-	"os"
-	//    "path/filepath"
-	"github.com/Sirupsen/logrus"
+    "flag"
+    "os"
+//	"github.com/Sirupsen/logrus"
 	. "github.com/smartystreets/goconvey/convey"
 	"testing"
 )
@@ -11,18 +11,14 @@ import (
 var CURRENT_DIR, _ = os.Getwd()
 
 func TestMain(t *testing.T) {
+    flag.Parse()
 	// Create a local directory that matches the name of the default profiles
 	// directory. This will be automatically deleted again by the gotest
 	// executable when it clears all test files.
 	//
 	// Additionally, create a profile called "first."
-	err := os.Mkdir(*PROFILES_PATH, os.ModeDir|0777)
-	err = os.Mkdir(*PROFILES_PATH+"first", os.ModeDir|os.ModePerm)
-
-	if err != nil {
-		logrus.Info(os.Getwd())
-		logrus.Error(err)
-	}
+	os.Mkdir(*PROFILES_PATH, os.ModeDir|0777)
+	os.Mkdir(*PROFILES_PATH+"first", os.ModeDir|os.ModePerm)
 
 	Convey("directories actually exists?", t, func() {
 		workingDir, _ := os.Getwd()
@@ -91,8 +87,7 @@ func TestLoadProfiles(t *testing.T) {
 			ProfilesPath: path,
 		})
 
-		So(CURRENT_DIR+"/profiles", ShouldBeNil)
-		So(err, ShouldBeNil)
+        So(err, ShouldBeNil)
 		So(len(profiles), ShouldEqual, 1)
 	})
 }

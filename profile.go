@@ -25,7 +25,7 @@ func LoadProfiles(profileNames []string, config SwellConfig) ([]SwellProfile, er
 
 	potentials, err := ioutil.ReadDir(config.ProfilesPath)
 	if err != nil {
-		return profiles, err
+        return profiles, errors.New(err.Error())
 	}
 
 	for _, potential := range potentials {
